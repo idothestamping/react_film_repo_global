@@ -1,18 +1,47 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import FilmListing from './FilmListing';
+import FilmDetail from './FilmDetail';
+import TMDB from './TMDB';
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      films: TMDB.films,
+      current: {}
+    }
+}
+
+handleDetailsClick = (film) => {
+  console.log("Fetching details for", film.title);
+  const url = `https://api.themoviedb.org/3/movie/${film.id}?api_key=${TMDB.api_key}&append_to_response=videos,images&language=en`
+
+  fetch(url)
+  .then(response => response.json())
+  .then(json => {
+    this.setState( {current: json} )
+  })
+  .catch(err => {
+    console.log("Error with fetch", err);
+  })
+  console.log("Fetch", film.title);
+}
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div className="film-library">
+
+          {/* <FilmListing films={TMDB.films} current={this.props.current}/>
+          <FilmDetail films={TMDB.films} current={this.props.current}/> */}
+
+          <FilmListing films={this.state.films} 
+          handleDetailsClick={this.handleDetailsClick}
+          />
+          <FilmDetail film={this.state.current}/>
+        
+        </div>
       </div>
     );
   }
