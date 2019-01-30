@@ -13,7 +13,11 @@ html,
 body,
 #root {
   height: 100%;
+<<<<<<< HEAD
   /* overflow: hidden; */
+=======
+  overflow: auto;
+>>>>>>> 6613617d2dee7d7f2d38614e940b0dedbf22ab8d
 }
 
 img {
